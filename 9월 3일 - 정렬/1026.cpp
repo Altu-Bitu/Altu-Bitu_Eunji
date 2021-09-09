@@ -4,8 +4,21 @@
 
 using namespace std;
 
+int minS(vector<int> &a, vector<int> &b) {
+	int min = 0;
+
+	sort(a.begin(), a.end());
+	sort(b.begin(), b.end(), greater<>());
+
+	for (int i = 0; i < a.size(); i++) {
+		min += a[i] * b[i];
+	}
+
+	return min;
+}
+
 int main() {
-	int n, min = 0;
+	int n, min;
 	vector<int> a;
 	vector<int> b;
 
@@ -21,11 +34,8 @@ int main() {
 		cin >> b[i];
 	}
 
-	sort(a.begin(), a.end());
-	sort(b.begin(), b.end(), greater<>());
+	min = minS(a, b);
 
-	for (int i = 0; i < n; i++) {
-		min += a[i] * b[i];
-	}
+	//Ãâ·Â
 	cout << min;
 }

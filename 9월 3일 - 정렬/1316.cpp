@@ -1,16 +1,21 @@
 #include<iostream>
+#include<vector>
 
 using namespace std;
 
 bool groupChecker(string word) {
 	bool group = true;
+	vector<bool>letter;
+	letter.assign(26, false);
+	letter[word[0] - 'a'] = true;
+
 	for (int i = 1; i < word.length(); i++) {
-		for (int j = 0; j < i; j++) {
-			if (word[j] != word[j + 1] && word[j] == word[i]) { //어떤 문자(word[j])와 이웃한 문자가 다르고 그 이후에 해당 문자(word[i])가 다시 등장한다면
-				group = false;
-				break;
-			}
+		if (word[i] != word[i-1] && letter[word[i] - 'a']) {
+			group = false;
+			return group;
 		}
+		if (word[i] != word[i - 1])
+			letter[word[i] - 'a'] = true;
 	}
 	return group;
 }

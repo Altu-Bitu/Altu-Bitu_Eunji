@@ -4,6 +4,17 @@
 
 using namespace std;
 
+int minTime(int n, vector<int> time) {	
+	sort(time.begin(), time.end());
+	int min_time = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j <= i; j++) {
+			min_time += time[j];
+		}
+	}
+	return min_time;
+}
+
 int main() {
 	int n;
 	int min_time = 0;
@@ -16,17 +27,9 @@ int main() {
 		cin >> time[i];
 	}
 
-	//정렬
-	sort(time.begin(), time.end());
-
-	//최소 시간 계산
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j <= i; j++) {
-			min_time += time[j];
-		}
-	}
-
+	
 	//출력
+	min_time = minTime(n, time);
 	cout << min_time;
 	
 }
