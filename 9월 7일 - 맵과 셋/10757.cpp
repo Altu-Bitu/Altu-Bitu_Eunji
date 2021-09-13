@@ -5,10 +5,9 @@ using namespace std;
 
 vector<int> result;
 
-void add(vector<int> &a, vector<int> &b) {
-	int idx = 0;
+void add(string a, string b) {
 	int size_a = a.size(), size_b = b.size();
-	bool carry = 0;
+	int carry = 0;
 	
 	while (size_a || size_b) {
 		//각 자릿수에 해당하는 수 및 그 합을 저장할 변수
@@ -16,15 +15,18 @@ void add(vector<int> &a, vector<int> &b) {
 
 		a_temp = 0;
 		b_temp = 0;
+		sum_temp = 0;
 
 		if (size_a > 0) {
-			a_temp = a[idx];
+			a_temp = a[size_a - 1] - '0';
 			size_a--;
 		}
+		
 		if (size_b > 0) {
-			b_temp = b[idx];
+			b_temp = b[size_b - 1] - '0';
 			size_b--;
 		}
+
 
 		sum_temp = a_temp + b_temp + carry;
 
@@ -37,25 +39,15 @@ void add(vector<int> &a, vector<int> &b) {
 			carry = 0;
 		}
 		
-		idx++;
 	}
 	if (carry) result.push_back(1);
 }
 
 int main() {
-	vector<int> a;
-	vector<int> b;
-	string input;;
+	string a, b;
 
 	//입력
-	cin >> input;
-	for (int i = 0; i < input.length(); i++) {
-		a.push_back(input[input.length() - 1 - i] - '0');
-	}
-	cin >> input;
-	for (int i = 0; i < input.length(); i++) {
-		b.push_back(input[input.length() - 1 - i] - '0');
-	}
+	cin >> a >> b;
 
 	//계산
 	add(a, b);

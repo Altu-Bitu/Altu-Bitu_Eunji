@@ -3,14 +3,14 @@
 
 using namespace std;
 
-set<string> unknown(set<string> unknown1, set<string> unknown2) {
+set<string> unknown(set<string> unknown1, int n) {
+	string unknown2;
 	set<string> result;
-
-	for (auto iter = unknown1.begin(); iter != unknown1.end(); ++iter) {
-		if (unknown2.find(*iter) != unknown2.end())
-			result.insert(*iter);
+	while (n--) {
+		cin >> unknown2;
+		if (unknown1.find(unknown2) != unknown1.end())
+			result.insert(unknown2);
 	}
-
 	return result;
 }
 
@@ -18,7 +18,6 @@ int main() {
 	int n, m;
 	string input;
 	set<string>unknown1;
-	set<string>unknown2;
 	set<string>result;
 
 	//입력
@@ -29,12 +28,8 @@ int main() {
 		unknown1.insert(input);
 	}
 
-	for (int i = 0; i < m; i++) {
-		cin >> input;
-		unknown2.insert(input);
-	}
 
-	result = unknown(unknown1, unknown2);
+	result = unknown(unknown1, m);
 
 	//출력
 	cout << result.size() << '\n';

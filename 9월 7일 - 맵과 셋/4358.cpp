@@ -14,10 +14,7 @@ int main() {
 	//입력
 	while (getline(cin, input)) {
 		cnt++;
-		if (species.find(input) == species.end())
-			species[input] = 1;
-		else
-			species[input]++;
+		species[input]++;
 	}
 	//소수점 넷째자리까지만
 	cout << fixed;

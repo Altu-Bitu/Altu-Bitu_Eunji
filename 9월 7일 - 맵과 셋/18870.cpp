@@ -13,8 +13,7 @@ void countSmaller(vector<int> x) {
 
 	int cnt = 0;
 	for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-		iter->second = cnt; //각 key보다 작은 key의 개수를 value에 저장
-		cnt++;
+		iter->second = cnt++; //각 key보다 작은 key의 개수를 value에 저장
 	}
 
 	for (int i = 0; i < x.size(); i++)
