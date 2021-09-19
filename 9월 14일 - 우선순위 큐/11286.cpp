@@ -3,7 +3,7 @@
 using namespace std;
 
 struct comp{
-	bool operator()(long long a, long long b) {
+	bool operator()(int a, int b) {
 		if (abs(a) != abs(b))
 			return abs(a) > abs(b);
 		else
@@ -12,11 +12,11 @@ struct comp{
 };
 
 //Àý´ñ°ª Èü
-priority_queue<long long, vector<long long>, comp> arr;
+priority_queue<int, vector<int>, comp> arr;
 
 
-long long arrPop() {
-	long long result;
+int arrPop() {
+	int result;
 	if (!arr.empty()) {
 		result = arr.top();
 		arr.pop();
@@ -28,16 +28,13 @@ long long arrPop() {
 	}
 }
 
-void arrAdd(long long x) {
-	arr.push(x);
-}
 
 int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
 	int n;
-	long long x, result;
+	int x, result;
 
 	//ÀÔ·Â
 	cin >> n;
@@ -47,7 +44,7 @@ int main() {
 			result = arrPop();
 			cout << result << '\n';
 		}
-		else 
-			arrAdd(x);
+		else
+			arr.push(x);
 	}
 }

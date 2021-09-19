@@ -15,7 +15,7 @@ int identify(string input) {
 	for (int i = 1; i < n; i++) {
 
 		//대문자 등장
-		if (input[i] >= 'A' && input[i] <= 'Z') {
+		if (isupper(input[i])) {
 			if (cpp && !java) { //앞서 c++이라고 판단했던 경우
 				cpp = false;
 				break; //에러로 판단하고 반복문 탈출
@@ -62,15 +62,9 @@ string transform(int flag, string input) {
 	else if (flag == 3) //그대로 반환
 		return input;
 	else if (flag == 1) { //c++형식을 java형식으로 변환
-		bool under_bar = false;
 		for (int i = 0; i < n; i++) {
 			if (input[i] == '_') {
-				under_bar = true;
-				continue;
-			}
-			if (under_bar) {
-				result += input[i] - 'a' + 'A';
-				under_bar = false;
+				result += toupper(input[++i]);
 			}
 			else
 				result += input[i];
@@ -78,9 +72,9 @@ string transform(int flag, string input) {
 	}
 	else { //java형식을 c++형식으로
 		for (int i = 0; i < n; i++) {
-			if (input[i] >= 'A' && input[i] <= 'Z') {
+			if (isupper(input[i])) {
 				result += "_";
-				input[i] = input[i] - 'A' + 'a';
+				input[i] = tolower(input[i]);
 			}
 			result += input[i];
 		}

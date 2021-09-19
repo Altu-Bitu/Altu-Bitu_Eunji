@@ -3,36 +3,35 @@
 
 using namespace std;
 
-void add(vector<int> &s, int x) {
-	s[x-1] = 1;
+void add(vector<bool> &s, int x) {
+	s[x-1] = true;
 }
 
-void remove(vector<int> &s, int x) {
-	s[x-1] = 0;
+void remove(vector<bool> &s, int x) {
+	s[x-1] = false;
 }
 
-int check(vector<int> &s, int x) {
-	if (s[x-1]) return 1;
-	else return 0;
+int check(vector<bool> &s, int x) {
+	return s[x - 1];
 }
 
-void toggle(vector<int> &s, int x) {
+void toggle(vector<bool> &s, int x) {
 	if (s[x-1])
-		s[x-1] = 0;
+		s[x-1] = false;
 	else
-		s[x-1] = 1;
+		s[x-1] = true;
 }
 
-void all(vector<int> &s) {
+void all(vector<bool> &s) {
 	for (int i = 0; i < 20; i++) {
-		s[i] = 1;
+		s[i] = true;
 	}
 }
 
-void empty(vector<int> &s) {
+void empty(vector<bool> &s) {
 	for (int i = 0; i < 20; i++) {
-		if (s[i] == 1)
-			s[i] = 0;
+		if (s[i])
+			s[i] = false;
 	}
 }
 
@@ -43,8 +42,8 @@ int main() {
 	int m, x;
 	string cmd;
 
-	//집합 S: 원소 x가 있다면 인덱스 x-1에 있는 값이 1
-	vector<int> s(21);
+	//집합 S: 원소 x가 있다면 인덱스 x-1에 있는 값이 true
+	vector<bool> s(21);
 
 	
 	cin >> m;

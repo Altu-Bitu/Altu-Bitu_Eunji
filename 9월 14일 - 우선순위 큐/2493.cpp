@@ -6,7 +6,7 @@ using namespace std;
 stack<pair<int, int>> tops;
 
 int receivingTop(int index, int height) {
-	int result;
+	int result = 0;
 	while (!tops.empty()) {
 		if (tops.top().second > height) { //스택의 top으로 갈수록 현재 탑과 제일 가까움
 			result = tops.top().first;
@@ -14,8 +14,7 @@ int receivingTop(int index, int height) {
 		}
 		tops.pop(); //왼쪽 탑 중 현재 탑보다 낮은 탑은 스택에서 제거
 	}
-	if (tops.empty())
-		result = 0;
+
 	//현재 탑의 위치와 높이를 스택에 넣는다.
 	tops.push({ index, height });
 	return result;

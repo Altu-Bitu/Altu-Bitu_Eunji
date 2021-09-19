@@ -7,9 +7,7 @@ using namespace std;
 
 int numOfClassroom(vector<pair<int, int>> time) {
 	//각 강의실 당 끝나는 시간을 저장할 최소힙
-	priority_queue<int, vector<int>, greater<>> pq;
-	//시작 시간 기준으로 time 정렬
-	sort(time.begin(), time.end());
+	priority_queue<int, vector<int>, greater<>> pq;	
 
 	pq.push(time[0].second);
 	for (int i = 1; i < time.size(); i++) {
@@ -41,6 +39,9 @@ int main() {
 	for (int i = 0; i < n; i++) {
 		cin >> time[i].first >> time[i].second;
 	}
+	//시작 시간 기준으로 time 정렬
+	sort(time.begin(), time.end());
+
 	//연산
 	result = numOfClassroom(time);
 
