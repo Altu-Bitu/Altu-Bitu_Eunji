@@ -23,11 +23,12 @@ int main() {
 	int temp = input2 / input1;
 	//곱해서 temp(최소공배수를 최대공약수로 나눈 값)가 되는 두 수, 즉 tempe 약수 중 서로소인 것을 찾아야 한다.
 	//그렇지 않으면 입력받은 최대공약수보다 더 큰 최대공약수를 가진다.
-	for (int i = 1; i <= sqrt(temp); i++) {
+	for (int i = sqrt(temp); i >= 1; i--) {
 		if (temp % i == 0) {
 			if (gcdRecursion(temp / i, i) == 1 && result[0] + result[1] > i + temp / i) {
 				result[0] = i;
 				result[1] = temp / i;
+				break;
 			}	
 		}
 	}

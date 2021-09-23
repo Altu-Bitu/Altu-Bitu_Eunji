@@ -23,7 +23,7 @@ void isPrime(vector<bool> &prime) {
 vector<int> goldbach(int n) {
 	vector<int>result(2, 0);
 
-	for (int i = 3; i <= n/2; i++) {
+	for (int i = 3; i <= n/2; i += 2) {
 		if (prime[i] && prime[n - i]) {
 				result[1] = n - i;
 				result[0] = i;
