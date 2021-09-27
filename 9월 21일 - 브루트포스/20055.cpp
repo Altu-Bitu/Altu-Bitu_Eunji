@@ -2,40 +2,51 @@
 #include <vector>
 using namespace std;
 
+void rotation(int& start, int& end, int& size, vector<bool> &check) {
+	//벨트 한 칸 회전
+	start--;
+	end--;
+	if (start < 0) start += size;
+	if (end < 0) end += size;
+
+	//내리는 위치에 도달한 로봇 내리기
+	if (check[end]) check[end] = false;
+}
+
 int cycle(vector<int> A, int k) {
+	int size = A.size();
 	int start = 0;
-	int end = A.size() / 2 - 1;
+	int end = size / 2 - 1;
 	int cnt = 0;
 
 	//칸 위에 로봇이 있는지 나타내는 배열
-	vector<bool> check(A.size(), false);
+	vector<bool> check(size, false);
 
 	while (k > 0) {
 		//단계 증가
 		cnt++;
 
-		//벨트 한 칸 회전
-		start--;
-		end--;
-		if (start < 0) start += A.size();
-		if (end < 0) end += A.size();
-		
-		//내리는 위치에 도달한 로봇 내리기
-		if (check[end]) check[end] = false;
+		//벨트 회전(올리는 위치와 내리는 위치의 인덱스 변경)
+		rotation(start, end, size, check);
 
 		//로봇 한 칸 이동
-		for (int i = A.size() / 2 - 2; i >= 1  ; i--) {
+		for (int i = end - 1; ; i--) {
 			int current_pos, next_pos;
 
 			//현재 움직일 로봇 위치
-			if (start + i >= A.size()) 
-				current_pos = start + i - A.size();
-			else 
-				current_pos = start + i;
+			if (i < 0)
+				current_pos = i + size;
+			else
+				current_pos = i;
+
+			//내리는 위치 바로 전부터 시작하여 올리는 위치 방향으로 이동하며 로봇이 움직일 수 있는지 검사 후
+			//올리는 위치에 오면 종료
+			if (current_pos == start)
+				break;
 
 			//로봇이 이동할 다음 칸의 위치
-			if (current_pos + 1 >= A.size())
-				next_pos = current_pos + 1 - A.size();
+			if (current_pos + 1 >= size)
+				next_pos = current_pos + 1 - size;
 			else
 				next_pos = current_pos + 1;
 			

@@ -33,9 +33,9 @@ int main() {
 	cin.tie(0);
 
 	int n;
+	bool result;
 
 	cin >> n;
-	vector<bool> result(n, false);
 	vector<int> triangular_num(SIZE, 0);
 
 	//미리 삼각수 구해서 배열에 저장
@@ -46,9 +46,7 @@ int main() {
 	for (int i = 0; i < n; i++) {
 		int input;
 		cin >> input;
-		result[i] = eureka(input, triangular_num);
+		result = eureka(input, triangular_num);
+		cout << result << '\n';
 	}
-
-	for (int i = 0; i < n; i++)
-		cout << result[i] << '\n';
 }

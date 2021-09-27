@@ -1,9 +1,17 @@
 ﻿#include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 #include <cmath>
 
 using namespace std;
+
+//비교함수 (최빈값 구하는 함수에서 사용)
+bool cmp(const pair<int, int>& a, const pair<int, int>& b) {
+	if (a.second == b.second)
+		return a.first < b.first;
+	return a.second > b.second;
+}
 
 //평균 구하는 함수
 double mean(vector<int> numbers) {
@@ -19,50 +27,35 @@ int mid(vector<int> numbers) {
 	return numbers[numbers.size() / 2];
 }
 
+
+
 //최빈값 구하는 함수
 int mode(vector<int> numbers) {
-	//numbers에 있는 수들이 몇번 등장하는지 저장할 벡터
-	vector<pair<int,int>> count;
-
-	//횟수(cnt)는 1로 초기화, 이전 인덱스 값(temp)는 number[0]으로 초기화
-	int cnt = 1, temp = numbers[0];
-	for (int i = 1; i < numbers.size(); i++) {
-		//만약 직전 인덱스에 저장된 값과 현재 인덱스에 저장된 값이 갔다면
-		if (numbers[i] == temp) {
-			cnt++; //횟수 증가
-		}
-		else { //직전 인덱스에 저장된 값과 다르다면
-			count.push_back({ cnt, temp }); //횟수와 그 값을 count 벡터에 저장
-			cnt = 1; //cnt, temp값 초기화
-			temp = numbers[i];
-		}
-	}
-	//numbers의 크기가 1이거나 
-	//마지막 원소가 바로 직전 원소와 값과 다르다면
-	//위에서 count에 저장되지 않으므로 따로 저장
-	if (numbers.size() == 1 || temp != count[count.size() - 1].second) {
-		count.push_back({ cnt, temp });
-	}
-
-	//가장 큰 cnt를 찾기 위해 count 정렬
-	sort(count.begin(), count.end());
+	//numbers에 있는 수들이 몇번 등장하는지 저장할 맵
+	map<int, int> count;
 	
+	for (int i = 0; i < numbers.size(); i++) {
+		count[numbers[i]]++;
+	}
 	
-	int cnt2 = 0; //만약 최빈값이 여러 개 있는 경우 그 개수를 저장하기 위한 변수
-	for (int i = count.size() - 1; i >= 0; i--) {
-		//count의 제일 마지막 원소(cnt)와 count[i]에 저장된 원소(cnt)가 같다면 count[i]에 저장된 값 또한 최빈값임
-		//따라서 그 두 값이 같다면 cnt2 증가 아니면 반복문 탈출
-		if (count[i].first != count[count.size() - 1].first)
+	//빈도(value)순으로 정렬하기 위해 벡터 선언
+	vector<pair<int, int>> freq(count.begin(), count.end());
+	sort(freq.begin(), freq.end(),cmp); //빈도를 내림차순으로 정렬
+
+	int cnt = 1;
+	for (int i = 1; i < freq.size(); i++) {
+		//freq[i]의 값이 freq의 제일 첫 원소(최대 빈도수)와 같다면 freq[i]에 저장된 값 또한 최빈값
+		if (freq[i].second != freq[0].second)
 			break;
-		cnt2++;
+		cnt++;
 	}
-
-	//최빈값이 여러 개인 경우-> 두번째로 작은 값 출력
-	if (cnt2 > 1)
-		return count[count.size() - cnt2 + 1].second;
-	//최빈값이 하나인 경우 -> count의 제일 마지막 원소 출력
-	return count[count.size() - cnt2].second;
 	
+	//최빈값이 여러 개인 경우 두번째로 작은 값 출력
+	//freq 정렬 시 정렬함수에서 pair의 두번째 인자가 같은 경우 첫번째 인자를 오름차순으로 정렬하도록 했으므로 1번 인덱스 원소가 두번째로 작은 값임.
+	if (cnt > 1)
+		return freq[1].first;
+	else
+		return freq[0].first;
 }
 
 //범위 구하는 함수
