@@ -36,14 +36,11 @@ void findMin(int cnt) {
 			str += to_string(num[i]); //num에 저장된 정수들 하나의 문자열(str)로 치환
 		}
 
-		if (min_temp > stoll(str)) {
-			min_temp = stoll(str);
-			ans_min = str;
-		}
+		ans_min = str;
 	}
 
 	//최솟값(부등호가 k개이므로 0 ~ k+1의 수로 이루어짐)
-	for (int i = 0; i <= k; i++) {
+	for (int i = k; i >= 0 ; i--) {
 		if (!check[i]) {
 			if (promising(cnt, i)) { //조건 만족하는지 체크
 				num[cnt] = i;
@@ -62,14 +59,11 @@ void findMax(int cnt) { //cnt: num의 인덱스
 			str += to_string(num[i]); //num에 저장된 정수들 하나의 문자열(str)로 치환
 		}
 		
-		if (max_temp < stoll(str)) {
-			max_temp = stoll(str);
-			ans_max = str;
-		}
+		ans_max = str;
 	}
 
 	//최댓값( 9-k ~ 9로 이루어짐)
-	for (int i = 9; i >= (9 - k); i--) {
+	for (int i = (9 - k); i <= 9; i++) {
 		if (!check[i]) {
 			if (promising(cnt, i)) { //조건 만족하는지 체크
 				num[cnt] = i;
