@@ -7,26 +7,30 @@ string findMax(string input) {
 	string result = "";
 	int size = input.size();
 
-	//앞 자리부터 검사
-	for (int i = 0; i < size; i++) {
-		if (input[i] == 'M') { //M이 나온 경우
-			int temp = i + 1;
-			//K가 나올 때까지 인덱스(temp) 증가
-			while (temp < size && input[temp] != 'K')
-				temp++;
+	//뒷 자리부터 검사
+	for (int i = size -1; i >= 0; i--) {
+		if (input[i] == 'K') { //K가 나온 경우
+			int temp = i - 1;
 
-			//K가 나오지 않았다면
-			if (temp == size)
-				result += '1'; //result에 1 추가
-			else { //k가 나왔다면 result에 5와 처음 M 다음부터 나온 M~K의 개수만큼 0 추가
-				result += '5';
-				for (int j = 0; j < temp - i; j++)
-					result += '0';
+			// K가 나올 때까지 인덱스(temp) 감소
+			while (temp >= 0 && input[temp] != 'K')
+				temp--;
+
+			//이전 문자가 k인 경우
+			if (temp == i - 1) {
+				result = '5' + result; //result에 5 추가
+				continue;
+			}
+			else { //M이 등장한 만큼 0 추가
+				temp++;
+				for (int j = 0; j < i - temp; j++)
+					result = '0' + result;
+				result = '5' + result;
 				i = temp; //i 값 갱신(stirng[temp] 이후부터 검사하도록)
 			}
 		}
-		else { //K가 나온 경우
-			result += '5'; //result에 5 추가
+		else { //M이 나온 경우
+			result = '1' + result; //result에 1 추가
 		}
 	}
 
