@@ -9,11 +9,7 @@ vector<int> liquid(vector<int> arr, int num, int idx) {
 	vector<int> ans(3, 0);
 	long long min_diff = 3 * 1e9 + 1;
 
-	int left = 0, right = arr.size() - 1;
-	if (left == idx) //왼쪽 포인터가 num의 인덱스와 같다면
-		left++;
-	if (right == idx) //오른쪽 포인터가 num의 인덱스와 같다면
-		right--;
+	int left = idx + 1, right = arr.size() - 1;
 	ans[0] = num;
 
 	while (left < right) {
@@ -26,16 +22,11 @@ vector<int> liquid(vector<int> arr, int num, int idx) {
 			min_diff = abs(mix);
 			ans[1] = arr[left], ans[2] = arr[right];
 		}
-		if (mix > 0) { // 0보다 크면 right 포인터 왼쪽으로 이동
+
+		if (mix > 0)// 0보다 크면 right 포인터 왼쪽으로 이동
 			right--;
-			if (right == idx)
-				right--;
-		}
-		else if (mix < 0) { // 0보다 작으면 left 포인터 오른쪽으로 이동
+		else if (mix < 0) // 0보다 작으면 left 포인터 오른쪽으로 이동
 			left++;
-			if (left == idx)
-				left++;
-		}
 	}
 	return ans;
 }
@@ -60,7 +51,7 @@ int main() {
 	vector<int> ans;
 	long long sum_ans = 3 * 1e9 + 1, sum_temp = 0;
 
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n - 2; i++) {
 		//arr[i]: 고정할 용액
 		temp = liquid(arr, arr[i], i);
 

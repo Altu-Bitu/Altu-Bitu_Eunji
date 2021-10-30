@@ -7,25 +7,25 @@ using namespace std;
 //좋은 수인지 아닌지 반환하는 함수
 bool isGood(int idx, int num, vector<int>numbers) {
 	int left = 0, right = numbers.size() - 1;
-	if (left == idx) //왼쪽 포인터가 num의 인덱스와 같다면
-		left++;
-	if (right == idx) //오른쪽 포인터가 num의 인덱스와 같다면
-		right--;
 
 	while (left < right) {
+		if (left == idx) { //왼쪽 포인터가 num의 인덱스와 같다면
+			left++;
+			continue;
+		}
+		if (right == idx) { //오른쪽 포인터가 num의 인덱스와 같다면
+			right--;
+			continue;
+		}
+
 		int sum = numbers[left] + numbers[right];
+
 		if (sum == num) //left, right가 가리키는 숫자의 합이 num이 된다면 true 반환
 			return true;
-		else if (sum < num) { //합이 num보다 작다면 left 포인터 오른쪽으로 이동
+		else if (sum < num)  //합이 num보다 작다면 left 포인터 오른쪽으로 이동
 			left++;
-			if (left == idx) 
-				left++;
-		}
-		else { //합이 num보다 크다면 right 포인터 왼쪽으로 이동
+		else //합이 num보다 크다면 right 포인터 왼쪽으로 이동
 			right--;
-			if (right == idx)
-				right--;
-		}
 	}
 
 	return false;
