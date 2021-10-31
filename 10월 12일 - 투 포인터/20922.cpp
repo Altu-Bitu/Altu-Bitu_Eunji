@@ -11,21 +11,20 @@ int maxLength(int n, int k, vector<int> numbers) {
 	map<int, int> count; //원소가 나온 횟수 저장하는 벡터
 	count[numbers[left]]++; //초기화
 	int temp = 1; //현재까지 수열의 길이 저장
-	while (right < n - 1) {
-		while (right < n - 1 && count[numbers[right]] <= k) { //원소의 횟수가 k 이하인 경우
+	while (left <= right && right < n - 1) {
+		if (count[numbers[right]] <= k) { //원소의 횟수가 k 이하인 경우
 			right++; //오른쪽 포인터 증가하며 범위 증가
 			count[numbers[right]]++; //증가한 오른쪽 포인터가 가리키는 원소의 횟수 증가
 			temp++; //수열의 길이 증가
+			if (count[numbers[right]] <= k)
+				ans = max(ans, temp); //최장 길이 갱신
 		}
-
-		ans = max(ans, temp - 1); //최장 길이 갱신
-		while (left <= right && count[numbers[right]] > k) { //원소의 횟수가 k를 초과한 경우
+		else { //원소의 횟수가 k를 초과한 경우
 			count[numbers[left]]--; //왼쪽 포인터가 가리키는 원소의 횟수 감소 후
 			left++; //왼쪽 포인터 감소
 			temp--; //수열의 길이 감소
 		}
 	}
-	ans = max(ans, temp); //최장 길이 갱신
 	return ans;
 }
 
