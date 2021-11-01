@@ -5,7 +5,7 @@
 using namespace std;
 
 //하나의 섬을 찾아 방문 표시(map의 값을 2로 변경)하는 함수
-void bfs(int w, int h, int r, int c, vector<vector<int>>& map) {
+vector<vector<int>> bfs(int w, int h, int r, int c, vector<vector<int>> map) {
 	queue<pair<int, int>> q; //탐색을 위한 큐
 	int dr[8] = {-1, 1, 0, 0, -1, -1, 1, 1}; //위, 아래, 오른쪽, 왼쪽, 오른쪽 위, 왼쪽 위, 오른쪽 아래, 왼쪽 아래
 	int dc[8] = {0, 0, 1, -1, 1, -1, 1, -1};
@@ -23,6 +23,7 @@ void bfs(int w, int h, int r, int c, vector<vector<int>>& map) {
 			}
 		}
 	}
+	return map;
 }
 
 //섬의 개수 반환하는 함수
@@ -31,7 +32,7 @@ int numOfIsland(int w, int h, vector<vector<int>> &map) {
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
 			if (map[i][j] == 1) { //아직 방문하지 않은 곳이라면
-				bfs(w, h, i, j, map);
+				map = bfs(w, h, i, j, map);
 				cnt++;
 			}
 		}
