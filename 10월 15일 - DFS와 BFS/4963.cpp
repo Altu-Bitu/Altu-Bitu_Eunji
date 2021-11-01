@@ -10,6 +10,7 @@ vector<vector<int>> bfs(int w, int h, int r, int c, vector<vector<int>> map) {
 	int dr[8] = {-1, 1, 0, 0, -1, -1, 1, 1}; //위, 아래, 오른쪽, 왼쪽, 오른쪽 위, 왼쪽 위, 오른쪽 아래, 왼쪽 아래
 	int dc[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 	q.push(make_pair(r, c));
+	map[r][c] += 1;
 	while (!q.empty()) {
 		int cr = q.front().first;
 		int cc = q.front().second;
