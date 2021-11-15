@@ -53,8 +53,6 @@ int main() {
 	//연산
 	if(order_input[0] == 1) //1번 정점부터 방문해야 함.
 		dfs(1);
-	else //1번 정점부터 방문하지 않으면 0 출력
-		cout << 0 << '\n';
 
 	//출력
 	if (ans == order_input)

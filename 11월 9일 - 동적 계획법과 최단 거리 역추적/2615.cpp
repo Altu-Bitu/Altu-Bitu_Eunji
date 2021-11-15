@@ -26,15 +26,11 @@ int whoWin(int row, int col, vector<vector<int>>& board) {
 
 		int cnt = 1; //같은 바둑알이 연달아 몇개 나오는지 카운트해서 저장할 변수
 		for (int i = 0; i < 5; i++) { //5개까지 확인(총 6개)
-			int nr = cr + dr[k];
-			int nc = cc + dc[k];
-			if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && board[nr][nc] == current) {
-				cr = nr;
-				cc = nc;
-				cnt++;
-			}
-			else
+			cr += dr[k];
+			cc += dc[k];
+			if (cr < 0 || cr >= SIZE || cc < 0 || cc >= SIZE || board[cr][cc] != current)
 				break;
+			cnt++;
 		}
 
 		if (cnt == 5) { //만약 같은 바둑알이 5개 나왔다면
@@ -46,18 +42,17 @@ int whoWin(int row, int col, vector<vector<int>>& board) {
 }
 
 //게임 결과 반환
-vector<int> game(vector<vector<int>>&board) {
-	vector<int>result(3, 0); //0: 이긴 바둑알의 종류, 1: 바둑알의 가로줄 변호, 2: 세로줄 번호
+pair<int,pair<int,int>> game(vector<vector<int>>&board) {
+	pair<int, pair<int, int>>result = { 0,{0,0} }; //first: 이긴 바둑알의 종류, second: 바둑알 위치
 	for (int i = 0; i < SIZE; i++) {
 		for (int j = 0; j < SIZE; j++) {
-			if (board[i][j] != 0) { //i행 j열 위치에 바둑알이 놓여있다면
-				int winner = whoWin(i, j,board); //승부가 나는지 확인
-				if (winner != 0) { //승부가 났다면
-					result[0] = winner;
-					result[1] = i + 1; //0행 0열부터 시작하므로 1 더함
-					result[2] = j + 1;
-					return result;
-				}
+			if (board[i][j] == 0)  //i행 j열 위치에 바둑알이 놓여있지 않다면
+				continue;
+			//바둑알이 놓인 경우
+			int winner = whoWin(i, j, board); //승부가 나는지 확인
+			if (winner != 0) { //승부가 났다면
+				result = { winner,{i + 1,j + 1} };
+				return result;
 			}
 		}
 	}
@@ -74,11 +69,11 @@ int main() {
 	}
 
 	//연산
-	vector<int>result = game(board);
+	pair<int, pair<int, int>>result = game(board);
 
 	//출력
-	if (result[0] == 0)
-		cout << result[0] << '\n';
+	if (result.first == 0)
+		cout << result.first << '\n';
 	else
-		cout << result[0] << '\n' << result[1] << ' ' << result[2] << '\n';
+		cout << result.first << '\n' << result.second.first << ' ' << result.second.second << '\n';
 }
