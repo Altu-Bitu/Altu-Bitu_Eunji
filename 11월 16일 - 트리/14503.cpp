@@ -17,7 +17,7 @@ int cntClean(int n, int m, int row, int col, int dir) {
 
 		int current_dir = dir;
 		do { //왼쪽으로 회전, 청소를 하지 않은 칸을 찾거나 원래 방향으로 돌아오면 회전 중지
-			dir = (dir - 1 + 4) % 4;
+			dir = (dir + 3) % 4;
 		} while (dir != current_dir && room[row + dr[dir]][col + dc[dir]] != 0);
 		
 		if (dir == current_dir && room[row + dr[dir]][col + dc[dir]] != 0) { //원래 방향으로 돌아옴 && 원래 방향 쪽 칸 청소가 안 되어 있다면

@@ -5,28 +5,27 @@ using namespace std;
 vector<vector<pair<int, int>>> tree; //트리
 vector<bool> visited; //방문체크
 int ans = 0; //답
+int far_node = 0; //지름의 양 끝 노드
 
-//지름 구하는 함수
-void maxDistance(int node, int sum) {
-	if (tree[node].size() == 1) { //루트 노드에 도달하면
-		ans = max(sum, ans); //최댓값 갱신
+//dfs 함수
+void dfs(int node, int sum) {
+	if (visited[node]) //이미 방문한 노드라면
 		return;
+
+	visited[node] = true; //방문 표시
+
+	if (ans < sum) { //현재까지의 거리보다 더 거리가 먼 노드라면
+		ans = sum; //거리 갱신
+		far_node = node; //노드 갱신
 	}
 
-	//노드에 연결된 간선의 수만큼 탐색
 	for (int i = 0; i < tree[node].size(); i++) {
-		int next = tree[node][i].first; //다음에 탐색할 노드
-		if (visited[next]) { //방문한 노드라면
-			continue;
-		}
-		visited[node] = true; //현재 노드 방문 표시
-		sum += tree[node][i].second; //경로 길이 갱신
-
-		maxDistance(next, sum); //다음 노드 방문
-
-		visited[node] = false; //방문 후 방문체크 해제
-		sum -= tree[node][i].second; //경로 길이 원래대로
+		int next_node = tree[node][i].first;
+		int next_sum = sum + tree[node][i].second;
+		dfs(next_node, next_sum);
 	}
+
+	visited[node] = false; //방문 표시 해제
 }
 
 int main() {
@@ -45,16 +44,11 @@ int main() {
 	}
 
 	//연산
-	//리프 노드에서 시작
-	while (n >= 1) {
-		if (tree[n].size() == 1) {
-			visited[n] = true;
-			int next = tree[n][0].first;
-			int weight = tree[n][0].second;
-			maxDistance(next, weight);
-		}
-		n--;
-	}
+	//루트 노드에서 가장 멀리 있는 리프 노드 찾기
+	dfs(1, 0);
+
+	//위에서 찾은 리프 노드에서 가장 먼 노드 찾기 & 그때의 거리(지름) 구하기
+	dfs(far_node, 0);
 
 	//출력
 	cout << ans << '\n';
