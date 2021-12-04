@@ -11,9 +11,8 @@ vector<vector<int>> space;
 vector<vector<int>> check; //방문 체크 & 이동 시간 저장 배열
 int n;
 int min_time; //상어가 물고기를 찾는 데 걸린 최소 시간
-pair<int, int> fish_pos; //아기 상어가 먹을 물고기 위치
 
-void bfs(int row, int col, int size) {
+pair<int, int> bfs(int row, int col, int size, pair<int, int> fish_pos) {
 	int dr[4] = { -1,1,0,0 }; //상, 하, 좌, 우
 	int dc[4] = { 0,0,-1,1 };
 
@@ -52,41 +51,41 @@ void bfs(int row, int col, int size) {
 			q.push({ nr,nc });
 		}
 	}
+
+	return fish_pos;
 }
 
 int eating(int row, int col) {
 	int time = 0;
 	int size = 2;
 	int cnt_fish = 0; //먹은 물고기 수
-	
+	pair<int, int> fish_pos; //아기 상어가 먹을 물고기 위치
+
 	while (true) {
 		//초기화
 		min_time = MAX_TIME;
 		fish_pos = { N, N };
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++)
-				check[i][j] = -1;
-		}
+		check.assign(n, vector<int>(n, -1));
 		check[row][col] = 0;
 
-		bfs(row, col, size); //물고기 탐색
+		fish_pos = bfs(row, col, size, fish_pos); //물고기 탐색
 
-		if (fish_pos != make_pair(N, N)) { //먹을 수 있는 물고기 발견
-			time += check[fish_pos.first][fish_pos.second]; //시간 갱신
-			cnt_fish++; //먹은 물고기 수 증가
-
-			if (cnt_fish == size) { //몸 크기와 같은 수의 물고기 먹은 경우
-				size++; //몸 크기 증가
-				cnt_fish = 0; //먹은 물고기 수 초기화
-			}
-
-			space[fish_pos.first][fish_pos.second] = 0; //해당 위치 물고기 제거
-
-			row = fish_pos.first; // 아기 상어 위치 갱신
-			col = fish_pos.second;
-		}
-		else //먹을 수 있는 물고기가 없는 경우
+		if (fish_pos == make_pair(N, N)) //먹을 수 있는 물고기가 없는 경우
 			break;
+
+		//먹을 수 있는 물고기 발견
+		time += check[fish_pos.first][fish_pos.second]; //시간 갱신
+		cnt_fish++; //먹은 물고기 수 증가
+
+		if (cnt_fish == size) { //몸 크기와 같은 수의 물고기 먹은 경우
+			size++; //몸 크기 증가
+			cnt_fish = 0; //먹은 물고기 수 초기화
+		}
+
+		space[fish_pos.first][fish_pos.second] = 0; //해당 위치 물고기 제거
+
+		row = fish_pos.first; // 아기 상어 위치 갱신
+		col = fish_pos.second;;
 	}
 
 	return time;

@@ -60,14 +60,15 @@ int main() {
 	}
 
 	for (int i = 0; i < m; i++) {
-		cin >> num; //i번째 파티에 num명의 사람 참석
-		for (int j = 0; j < num; j++) {
-			int input; //참석한 사람의 번호
-			cin >> input;
-			party[i].push_back(input); //파티 명단에 넣기
+		cin >> num; //i번째 파티에 num명의 사람 참가
+		int input1, input2; //참석한 사람의 번호
+		cin >> input1;
+		party[i].push_back(input1);
+		for (int j = 1; j < num; j++) {
+			cin >> input2;
+			unionInput(input1, input2); //같은 파티에 참석한 사람들끼리 하나의 집합으로 묶음.
+			input1 = input2;
 		}
-		for (int j = 0; j < num - 1; j++) //같은 파티에 참석한 사람들끼리 하나의 집합으로 묶음.
-			unionInput(party[i][j], party[i][j + 1]);
 	}
 
 	//연산 및 출력

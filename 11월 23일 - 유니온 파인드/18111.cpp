@@ -5,27 +5,33 @@ using namespace std;
 
 vector<vector<int>> space;
 
+pair<int, int> moveBlock(int height, int n, int m, int b) {
+	pair<int, int> info = { 0, b };
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			int num = height - space[i][j]; //필요한 블록 양
+			info.second -= num; //남은 블록에서 필요한 블록 수 빼기
+			if (num < 0) //필요한 블록 수가 음수인 경우(블록을 제거하는 경우)
+				info.first = info.first + (-2) * num; //시간 갱신
+			else if (num > 0) //블록 추가하는 경우
+				info.first += num; //시간 갱신
+		}
+	}
+	return info;
+}
+
 pair<int, int> ground(int n, int m, int b, int max_height, int min_height) {
 	pair<int, int> ans = {2e8, 0}; //시간, 높이 순
 
 	//최소 높이부터 최대 높이까지 모두 걸리는 시간 검사
 	for (int i = min_height; i <= max_height; i++) {
-		int time = 0; //소요 시간
-		int rest_block = b; //인벤토리에 남은 블록 수
 
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < m; k++) {
-				int num = i - space[j][k]; //필요한 블록 양
-				rest_block -= num; //남은 블록에서 필요한 블록 수 빼기
-				if (num < 0) //필요한 블록 수가 음수인 경우(블록을 제거하는 경우)
-					time = time + (-2) * num; //시간 갱신
-				else if(num > 0) //블록 추가하는 경우
-					time += num; //시간 갱신
-			}
-		}
-		if (rest_block >= 0) { //남은 블록이 0개 이상인 경우
-			if (time <= ans.first){ //정답 갱신
-				ans.first = time;
+		pair<int, int> temp = moveBlock(i, n, m, b);
+		
+		if (temp.second >= 0) { //남은 블록이 0개 이상인 경우
+			if (temp.first <= ans.first){ //정답 갱신
+				ans.first = temp.first;
 				ans.second = max(ans.second, i);
 			}
 		}
