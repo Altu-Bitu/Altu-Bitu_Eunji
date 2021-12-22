@@ -54,8 +54,8 @@ int main() {
 	vector<int> result = topologicalSort(n, indegree, graph);
 
 	//연산 결과로 반환된 벡터에 모든 가수가 저장되어 있지 않다면 위상정렬을 하지 못하는 것(사이클 발생)
-	cout << 0 << '\n';
-	if (result.size() != n) { 
+	if (result.size() != n) {
+		cout << 0 << '\n';
 		return 0;
 	}
 
