@@ -9,6 +9,7 @@ using namespace std;
 int dr[4] = { 1, 0, -1, 0 };
 int dc[4] = { 0, 1, 0, -1 };
 int ans = 1000;
+vector<pair<pair<int, int>, pair<int, int>>> position(7);
 
 int bfs(int r, int c, pair<int, int>card, vector<vector<int>>& board) { //(r,c): 커서의 위치, card: 목적지(카드 위치)
     vector<vector<bool>> visited(4, vector<bool>(4, false));
@@ -66,33 +67,20 @@ void game(int row, int col, int cnt, int sum, vector<int> cards, vector<vector<i
         return;
     }
 
-    int cr1 = -1, cr2 = 0, cc1 = 0, cc2 = 0; //카드 쌍(1,2)의 위치
-    
-    //카드 위치 찾기
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (board[i][j] == cards[cnt]) {
-                if (cr1 < 0)
-                    cr1 = i, cc1 = j;
-                else
-                    cr2 = i, cc2 = j;
-            }
-        }
-    }
+    int cr1 = position[cards[cnt]].first.first, cc1 = position[cards[cnt]].first.second; //카드1의 위치
+    int cr2 = position[cards[cnt]].second.first,  cc2 = position[cards[cnt]].second.second; //카드2의 위치
 
     //카드 1, 카드 2 순으로 뒤집음
     int sum_to_2 = bfs(row, col, { cr1,cc1 }, board) + bfs(cr1, cc1, { cr2,cc2 }, board);
-
+    game(cr2, cc2, cnt + 1, sum + sum_to_2, cards, board); //다음 카드 뒤집기
+   
     //다음 경우 계산을 위해 뒤집혀진 카드 다시 뒤집음
     board[cr1][cc1] = cards[cnt];
     board[cr2][cc2] = cards[cnt];
 
     //카드 2, 카드 1 순으로 뒤집음
     int sum_to_1 = bfs(row, col, { cr2,cc2 }, board) + bfs(cr2, cc2, { cr1,cc1 }, board);
-
-    //다음 카드 뒤집기
-    game(cr2, cc2, cnt + 1, sum + sum_to_2, cards, board);
-    game(cr1, cc1, cnt + 1, sum + sum_to_1, cards, board);
+    game(cr1, cc1, cnt + 1, sum + sum_to_1, cards, board); //다음 카드 뒤집기
 }
 
 int solution(vector<vector<int>> board, int r, int c) {
@@ -101,9 +89,14 @@ int solution(vector<vector<int>> board, int r, int c) {
     vector<int>cards;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (board[i][j] && !card_type[board[i][j]]) {
-                card_type[board[i][j]] = true;
-                cards.push_back(board[i][j]);
+            if (board[i][j]) { //카드가 있는 위치이면
+                if (!card_type[board[i][j]]) { //입력받은 적 없는 카드 종류이면
+                    card_type[board[i][j]] = true; //입력 받았음을 표시
+                    cards.push_back(board[i][j]); //카드 목록에 추가
+                    position[board[i][j]].first = { i,j }; //위치 저장
+                }
+                //이전에 입력받았던 종류의 카드라면
+                position[board[i][j]].second = { i,j }; //위치만 저장
             }
         }
     }
